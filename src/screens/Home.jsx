@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { globalStyles } from '../global/styles/styles.style'; // Ajusta la ruta a tu archivo
 
 const Home = () => {
   return (
