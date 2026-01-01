@@ -66,6 +66,11 @@ const globalStyles = StyleSheet.create({
   camera: {
     flex: 1, // Que ocupe todo el espacio de su contenedor
   },
+  capture: {
+    width: 200, 
+    height: 200, 
+    borderRadius: 10,
+  }
 
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 // Permissions camera
 import { CameraView, useCameraPermissions } from 'expo-camera';
 //styles
@@ -44,40 +44,57 @@ const Home = () => {
   };
 
   const tomarFoto = async () => {
+    // Verificamos que el "mando" (ref) esté conectado
     if (cameraRef.current) {
-      // 1. Le decimos al mando: "¡Dispara!"
-      const foto = await cameraRef.current.takePictureAsync();
-      // 2. Por ahora, solo vamos a ver en la consola si funcionó
-      console.log("¡Foto capturada!", foto.uri);
-    }
+      // 🔔 Esperamos a que la cámara termine de procesar
+      const opciones = { quality: 0.7, base64: true };
+      const data = await cameraRef.current.takePictureAsync(opciones);
+      
+      // 📦 Guardamos la ubicación de la foto en nuestra caja
+      setFotoCapturada(data.uri);
+      console.log("Foto guardada en:", data.uri);
+  }
   };
 
   return (
-<View style={GS.containerCenter}>
-      <Text style={GS.title}>Reto del día:</Text>
+  <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <View style={GS.containerCenter}>
+        <Text style={GS.title}>Reto del día:</Text>
+        
+        <View style={GS.card}>
+          <Text style={GS.retoText}>{reto}</Text>
+        </View>
+
+        <View style={GS.cameraContainer}>
+          <CameraView 
+            ref={cameraRef}
+            style={GS.camera}
+            facing="back"
+          >
+          </CameraView>
+
+          <TouchableOpacity style={GS.button} onPress={tomarFoto}>
+              <Text style={GS.buttonText}>CAPTURAR RETO 📸</Text>
+            </TouchableOpacity>
+
+        </View>
+
+        <TouchableOpacity style={GS.button} onPress={generarReto}>
+          <Text style={GS.buttonText}>NUEVO RETO</Text>
+        </TouchableOpacity>
       
-      <View style={GS.card}>
-        <Text style={GS.retoText}>{reto}</Text>
-      </View>
-
-      <View style={GS.cameraContainer}>
-        <CameraView 
-          ref={cameraRef}
-          style={GS.camera}
-          facing="back"
-        >
-        </CameraView>
-
-        <TouchableOpacity style={GS.button} onPress={tomarFoto}>
-            <Text style={GS.buttonText}>CAPTURAR RETO 📸</Text>
-          </TouchableOpacity>
-
-      </View>
-
-      <TouchableOpacity style={GS.button} onPress={generarReto}>
-        <Text style={GS.buttonText}>NUEVO RETO</Text>
-      </TouchableOpacity>
+        {fotoCapturada && (
+          <View style={GS.containerCaptura}>
+            <Text style={GS.text}>Tu captura:</Text>
+            <Image 
+              source={{ uri: fotoCapturada }} 
+              style={GS.capture} 
+            />
+          </View>
+        )}   
+      
     </View>
+  </ScrollView>
   );
 };
 
