@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+// Permissions camera
+import { Camera, useCameraPermissions } from 'expo-camera';
 //styles
 import { globalStyles as GS } from '../global/styles/Styles.style';
 
@@ -13,6 +15,26 @@ const Home = () => {
     "Captura un reflejo en el agua"
   ];
   const [reto, setReto] = useState("¿Listo para un reto?");
+  // Persmisions camera ---------------------------------------- START
+    const [cameraPermission,cameraRequestPermission] = useCameraPermissions();
+    useEffect(() => {
+      // Pedimos permiso automáticamente al entrar
+      cameraRequestPermission();
+    }, []);
+    // Accept
+    if (!cameraPermission) return <View />;
+    // DENIED
+    if (!cameraPermission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>Necesitamos tu permiso para mostrar la cámara</Text>
+        <TouchableOpacity onPress={cameraRequestPermission} style={styles.button}>
+          <Text>Dar Permiso</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  // Persmisions camera ---------------------------------------- END
 
   const generarReto = () => {
     const indiceAleatorio = Math.floor(Math.random() * retos.length);
