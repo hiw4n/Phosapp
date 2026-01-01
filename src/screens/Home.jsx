@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 // Permissions camera
-import { Camera, useCameraPermissions } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 //styles
 import { globalStyles as GS } from '../global/styles/Styles.style';
 
@@ -42,15 +42,21 @@ const Home = () => {
   };
 
   return (
-    <View style={GS.containerCenter}>
+<View style={GS.containerCenter}>
       <Text style={GS.title}>Reto del día:</Text>
       
       <View style={GS.card}>
         <Text style={GS.retoText}>{reto}</Text>
       </View>
 
+      <View style={GS.cameraContainer}>
+        <CameraView style={GS.camera} facing="back">
+          {/* Aquí irán los botones sobre la cámara más adelante */}
+        </CameraView>
+      </View>
+
       <TouchableOpacity style={GS.button} onPress={generarReto}>
-        <Text style={GS.buttonText}>GENERAR RETO</Text>
+        <Text style={GS.buttonText}>NUEVO RETO</Text>
       </TouchableOpacity>
     </View>
   );

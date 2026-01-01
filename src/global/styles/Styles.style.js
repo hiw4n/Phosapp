@@ -51,6 +51,20 @@ const globalStyles = StyleSheet.create({
     inactive: C.inactive,
   },
 
+
+  cameraContainer: {
+    width: '90%',
+    height: 300, // Altura fija para empezar
+    borderRadius: 20,
+    overflow: 'hidden', // Para que la cámara respete las esquinas redondeadas
+    marginVertical: 20,
+    borderWidth: 2,
+    borderColor: '#00ADB5',
+  },
+  camera: {
+    flex: 1, // Que ocupe todo el espacio de su contenedor
+  },
+
 });
 
 export { globalStyles, C as COLORS };
