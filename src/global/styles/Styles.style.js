@@ -44,7 +44,9 @@ const globalStyles = StyleSheet.create({
   },
   buttonText: { 
     color: 'white', 
-    fontWeight: 'bold' 
+    fontWeight: 'bold',
+    textAlign: 'center',
+    width: 'auto',
   },
   nav:{
     active: C.accent,
