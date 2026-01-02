@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-const MyGallery = () => {
+const MyPhotos = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MyGallery</Text>
+      <Text style={styles.title}>Mis Fotos</Text>
     </View>
   );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MyGallery;
+export default MyPhotos;

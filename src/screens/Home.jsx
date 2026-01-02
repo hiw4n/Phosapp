@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 // Permissions camera
 import { CameraView, useCameraPermissions } from 'expo-camera';
 //styles
-import { globalStyles as GS } from '../global/styles/Styles.style';
+import { globalStyles as GS } from '../global/styles/styles.style';
 
 const Home = () => {
   //TODO: Retox, cambiar más adelante por data dinámica.
@@ -69,7 +69,6 @@ const Home = () => {
           <CameraView 
             ref={cameraRef}
             style={GS.camera}
-            facing="back"
           >
           </CameraView>
 

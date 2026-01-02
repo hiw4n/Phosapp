@@ -26,10 +26,17 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-web-browser"
     ]
   },
   "plugins": [
+    [
+      "expo-web-browser",
+      {
+        "experimentalLauncherActivity": true
+      }
+    ],
     [
       "expo-camera",
       {

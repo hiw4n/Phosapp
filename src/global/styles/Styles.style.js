@@ -46,11 +46,6 @@ const globalStyles = StyleSheet.create({
     color: 'white', 
     fontWeight: 'bold',
     textAlign: 'center',
-    width: 'auto',
-  },
-  nav:{
-    active: C.accent,
-    inactive: C.inactive,
   },
 
 
@@ -70,7 +65,15 @@ const globalStyles = StyleSheet.create({
     width: 200, 
     height: 200, 
     borderRadius: 10,
-  }
+  },
+
+
+  //NAVIGATOR:
+  tabBarStyle: {
+    backgroundColor: C.primary, 
+    borderTopWidth: 0.5, 
+  },
+  headerStyle: { backgroundColor: C.primary },
 
 });
 
