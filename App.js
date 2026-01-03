@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from "react";
 //BD
-import { initDB } from './src/db/init';
+import { initDB } from "./src/db/init";
 //Componentes
-import MainNavigator from './src/navigation/MainNavigator';
+import MainNavigator from "./src/navigation/MainNavigator";
 
 export default function App() {
   // cargar la BD al iniciar la app
@@ -13,11 +12,6 @@ export default function App() {
     } catch (error) {
       console.log("Error al inicializar la DB:", error);
     }
-  }, []); 
-  // El [ ] vacío asegura que solo ocurra una vez
- // return <View ><Text>Cargando...</Text></View>;
- return <MainNavigator />;
-
+  }, []); // El [ ] vacío asegura que solo ocurra una vez
+  return <MainNavigator />;
 }
-
- 
