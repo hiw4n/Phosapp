@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 // Permissions camera
 import { CameraView, useCameraPermissions } from "expo-camera";
+import { guardarRetoEnDB } from "../services/retosService";
 //styles
 import { globalStyles as SGS } from "../global/styles/Styles.style";
 
@@ -55,9 +56,9 @@ const Home = () => {
         skipProcessing: false 
       };
       const data = await cameraRef.current.takePictureAsync(opciones);
-      
       setFotoCapturada(data.uri);
       console.log("Foto guardada en:", data.uri);
+      guardarRetoEnDB(reto, data.uri);
     } catch (error) {
       console.log("Error al tomar foto:", error);
     }
