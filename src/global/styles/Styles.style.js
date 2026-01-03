@@ -51,6 +51,7 @@ const globalStyles = StyleSheet.create({
 
   cameraContainer: {
     width: '90%',
+    minHeight: 300,
     height: 300, // Altura fija para empezar
     borderRadius: 20,
     overflow: 'hidden', // Para que la cámara respete las esquinas redondeadas
@@ -60,6 +61,10 @@ const globalStyles = StyleSheet.create({
   },
   camera: {
     flex: 1, // Que ocupe todo el espacio de su contenedor
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   capture: {
     width: 200, 

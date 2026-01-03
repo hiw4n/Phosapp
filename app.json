@@ -13,9 +13,13 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Esta aplicación necesita acceso a la cámara para completar los retos."
+      }
     },
     "android": {
+      "package": "com.hiw4n.phosapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -27,21 +31,19 @@
     },
     "plugins": [
       "expo-sqlite",
-      "expo-web-browser"
+      [
+        "expo-web-browser",
+        {
+          "experimentalLauncherActivity": true
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir que Phosapp use la cámara",
+          "microphonePermission": "Permitir que Phosapp use el micrófono"
+        }
+      ]
     ]
-  },
-  "plugins": [
-    [
-      "expo-web-browser",
-      {
-        "experimentalLauncherActivity": true
-      }
-    ],
-    [
-      "expo-camera",
-      {
-        "cameraPermission": "Phos App necesita acceder a tu cámara para que puedas completar los retos fotográficos."
-      }
-    ]
-  ]
+  }
 }

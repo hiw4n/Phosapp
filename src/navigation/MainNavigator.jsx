@@ -1,9 +1,11 @@
+import { enableScreens } from 'react-native-screens';
+enableScreens(false);
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 //Styles  
-import { globalStyles as SGS, COLORS as SC } from '../global/styles/styles.style';
+import { globalStyles as SGS, COLORS as SC } from '../global/styles/Styles.style';
 // Pantallas
 import Home from '../screens/Home';
 import Gallery from '../screens/Gallery';
@@ -13,6 +15,8 @@ import MyPhotos from '../screens/MyPhotos';
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
+  //return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Hola</Text></View>
+
   return (
     <NavigationContainer>
       <Tab.Navigator
