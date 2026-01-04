@@ -3,6 +3,10 @@ import { StyleSheet } from 'react-native';
 import { COLORS as C} from './_Colors.style';
 
 const globalStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: C.background,
+  },
   containerCenter: {
     flex: 1,
     justifyContent: 'center',
@@ -52,26 +56,34 @@ const globalStyles = StyleSheet.create({
   cameraContainer: {
     width: '90%',
     minHeight: 300,
-    height: 300, // Altura fija para empezar
+    height: 300,
     borderRadius: 20,
-    overflow: 'hidden', // Para que la cámara respete las esquinas redondeadas
+    overflow: 'hidden',
     marginVertical: 20,
     borderWidth: 2,
     borderColor: '#00ADB5',
   },
   camera: {
-    flex: 1, // Que ocupe todo el espacio de su contenedor
+    flex: 1,
     width: '100%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerCaptura: {
+    alignItems: 'center',
+    marginTop: 20,
   },
   capture: {
     width: 200, 
     height: 200, 
     borderRadius: 10,
   },
-cameraButtonsContainer: {
+  text: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  cameraButtonsContainer: {
     flexDirection: 'row', // Alinea botones en horizontal
     justifyContent: 'space-between', // Uno a cada punta
     paddingHorizontal: 30, // Separación de los bordes laterales
@@ -95,22 +107,27 @@ cameraButtonsContainer: {
     backgroundColor: C.primary, 
     borderTopWidth: 0.5, 
   },
-  headerStyle: { backgroundColor: C.primary },
-controlesSuperiores: {
+  headerStyle: { 
+    backgroundColor: C.primary 
+  },
+  controlesSuperiores: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 20,
     width: '100%',
+    position: 'absolute',
+    top: 0,
+    zIndex: 10,
   },
   botonCircular: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)', // Blanco transparente
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'white'
+    borderColor: 'white',
   },
 });
 

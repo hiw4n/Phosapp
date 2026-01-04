@@ -4,8 +4,8 @@ import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { guardarRetoEnDB } from "../services/retosService";
 // Permissions Locallization
-import * as Location from 'expo-location';
-//styles
+import * as Location from "expo-location";
+//Global styles
 import { globalStyles as SGS } from "../global/styles/Styles.style";
 
 const Home = () => {
@@ -17,24 +17,29 @@ const Home = () => {
     "Primer plano de una textura",
     "Captura un reflejo en el agua",
   ];
+  
+  // ========== TODOS LOS ESTADOS ==========
   const [reto, setReto] = useState("¿Listo para un reto?");
-  // Persmisions camera ---------------------------------------- START
   const [cameraPermission, cameraRequestPermission] = useCameraPermissions();
   const [fotoCapturada, setFotoCapturada] = useState(null);
-  const cameraRef = useRef(null); // El mando empieza "desconectado" (null)
   const [ladoCamara, setLadoCamara] = useState('back');
   const [flash, setFlash] = useState('off');
-  const [linterna, setLinterna] = useState(false); // true o false
-  //localization
+  const [linterna, setLinterna] = useState(false);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  
+  // Refs
+  const cameraRef = useRef(null);
+  
+  // ========== TODOS LOS USEEFFECT ==========
   useEffect(() => {
     // Pedimos permiso automáticamente al entrar
     cameraRequestPermission();
-  }, []);
+  }, [cameraRequestPermission]);
+  
   // Accept
   if (!cameraPermission) return <View />;
+  
   // DENIED
   if (!cameraPermission.granted) {
     return (
@@ -48,30 +53,28 @@ const Home = () => {
       </View>
     );
   }
-  // Persmisions camera ---------------------------------------- END
-
+  
   const generarReto = () => {
     const indiceAleatorio = Math.floor(Math.random() * retos.length);
     setReto(retos[indiceAleatorio]);
   };
 
   const tomarFoto = async () => {
-    // Verificamos que el "mando" (ref) esté conectado
     if (cameraRef.current) {
-    try {
-      const opciones = { 
-        quality: 0.7, 
-        base64: false, // Cambia a false si no necesitas el chorro de texto base64 para ahorrar memoria
-        skipProcessing: false 
-      };
-      const data = await cameraRef.current.takePictureAsync(opciones);
-      setFotoCapturada(data.uri);
-      console.log("Foto guardada en:", data.uri);
-      guardarRetoEnDB(reto, data.uri);
-    } catch (error) {
-      console.log("Error al tomar foto:", error);
+      try {
+        const opciones = { 
+          quality: 0.7, 
+          base64: false,
+          skipProcessing: false 
+        };
+        const data = await cameraRef.current.takePictureAsync(opciones);
+        setFotoCapturada(data.uri);
+        console.log("Foto guardada en:", data.uri);
+        guardarRetoEnDB(reto, data.uri);
+      } catch (error) {
+        console.log("Error al tomar foto:", error);
+      }
     }
-  }
   };
 
   return (

@@ -10,7 +10,10 @@ if (Platform.OS !== 'web') {
 export const initDB = () => {
     
     if (Platform.OS === 'web') return;
-
+    if (!db) {
+      console.log("⚠️ Base de datos no disponible aún");
+      return;
+    }
     db.execSync(`
         CREATE TABLE IF NOT EXISTS retos (
         id INTEGER PRIMARY KEY NOT NULL,
