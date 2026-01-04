@@ -17,30 +17,62 @@ const Home = () => {
     "Primer plano de una textura",
     "Captura un reflejo en el agua",
   ];
-  
-  // ========== TODOS LOS ESTADOS ==========
+
   const [reto, setReto] = useState("¿Listo para un reto?");
-  const [cameraPermission, cameraRequestPermission] = useCameraPermissions();
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  // Persmisions camera ---------------------------------------- START
   const [fotoCapturada, setFotoCapturada] = useState(null);
   const [ladoCamara, setLadoCamara] = useState('back');
   const [flash, setFlash] = useState('off');
-  const [linterna, setLinterna] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [linterna, setLinterna] = useState(false); // true o false
   
-  // Refs
-  const cameraRef = useRef(null);
+  const cameraRef = useRef(null); // El mando empieza "desconectado" (null)
   
-  // ========== TODOS LOS USEEFFECT ==========
+  const [cameraPermission, cameraRequestPermission] = useCameraPermissions();
+  
   useEffect(() => {
     // Pedimos permiso automáticamente al entrar
     cameraRequestPermission();
-  }, [cameraRequestPermission]);
-  
-  // Accept
+    // permisos localización ------------
+    (async () => {
+        // Pedimos permiso para usar el GPS "en primer plano" (mientras la app se usa)
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permiso de ubicación denegado ❌');
+          return;
+        }
+        // Si tenemos permiso, obtenemos la posición actual
+        let actualLocation = await Location.getCurrentPositionAsync({});
+        setLocation(actualLocation);
+        console.log("📍 Ubicación obtenida:", actualLocation.coords.latitude, actualLocation.coords.longitude);
+      })();
+  }, []);
+
+  const generarReto = () => {
+    const indiceAleatorio = Math.floor(Math.random() * retos.length);
+    setReto(retos[indiceAleatorio]);
+  };
+  const tomarFoto = async () => {
+    // Verificamos que el "mando" (ref) esté conectado
+    if (cameraRef.current) {
+      try {
+        const opciones = { 
+          quality: 0.7, 
+          base64: false, // Cambia a false si no necesitas el chorro de texto base64 para ahorrar memoria
+          skipProcessing: false 
+        };
+        const data = await cameraRef.current.takePictureAsync(opciones);
+        setFotoCapturada(data.uri);
+        console.log("Foto guardada en:", data.uri);
+        guardarRetoEnDB(reto, data.uri);
+      } catch (error) {
+        console.log("Error al tomar foto:", error);
+      }
+    }
+  };
+
   if (!cameraPermission) return <View />;
-  
-  // DENIED
   if (!cameraPermission.granted) {
     return (
       <View style={SGS.container}>
@@ -53,29 +85,6 @@ const Home = () => {
       </View>
     );
   }
-  
-  const generarReto = () => {
-    const indiceAleatorio = Math.floor(Math.random() * retos.length);
-    setReto(retos[indiceAleatorio]);
-  };
-
-  const tomarFoto = async () => {
-    if (cameraRef.current) {
-      try {
-        const opciones = { 
-          quality: 0.7, 
-          base64: false,
-          skipProcessing: false 
-        };
-        const data = await cameraRef.current.takePictureAsync(opciones);
-        setFotoCapturada(data.uri);
-        console.log("Foto guardada en:", data.uri);
-        guardarRetoEnDB(reto, data.uri);
-      } catch (error) {
-        console.log("Error al tomar foto:", error);
-      }
-    }
-  };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
