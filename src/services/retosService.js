@@ -25,3 +25,15 @@ export const obtenerRetosDeDB = () => {
   const todosLosRetos = db.getAllSync("SELECT * FROM retos ORDER BY id DESC;");
   return todosLosRetos;
 };
+
+export const eliminarRetoDeDB = (id) => {
+  if (!db) {
+    console.log("La base de datos no está lista");
+    return;
+  }
+
+  // Ejecutamos la frase SQL para BORRAR el reto con el id dado.
+  db.runSync("DELETE FROM retos WHERE id = ?;", [id]);
+
+  console.log(`🗑️ Reto con id ${id} eliminado de SQLite`);
+}
