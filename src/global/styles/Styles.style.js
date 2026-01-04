@@ -71,15 +71,47 @@ const globalStyles = StyleSheet.create({
     height: 200, 
     borderRadius: 10,
   },
-
-
+cameraButtonsContainer: {
+    flexDirection: 'row', // Alinea botones en horizontal
+    justifyContent: 'space-between', // Uno a cada punta
+    paddingHorizontal: 30, // Separación de los bordes laterales
+    paddingTop: 20, // Separación del borde superior
+    width: '100%',
+    position: 'absolute', // Clave: flota sobre la cámara sin ocupar espacio "físico"
+    top: 0.5,
+  },
+  iconButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25, // Botón circular
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Negro translúcido para que resalte sobre cualquier fondo
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)', // Borde sutil
+  },
   //NAVIGATOR:
   tabBarStyle: {
     backgroundColor: C.primary, 
     borderTopWidth: 0.5, 
   },
   headerStyle: { backgroundColor: C.primary },
-
+controlesSuperiores: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20,
+    width: '100%',
+  },
+  botonCircular: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)', // Blanco transparente
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'white'
+  },
 });
 
 export { globalStyles, C as COLORS };

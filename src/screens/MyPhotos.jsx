@@ -14,6 +14,7 @@ const MyPhotos = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
 
+
   useFocusEffect(
     useCallback(() => {
       const datos = obtenerRetosDeDB();
@@ -21,12 +22,12 @@ const MyPhotos = () => {
     }, [])
   );
 
-const abrirVisor = (item) => {
+  const abrirVisor = (item) => {
     setFotoSeleccionada(item); // Guardamos la foto pulsada
     setModalVisible(true);     // Abrimos la ventana
   };
 
-const renderItem = ({ item }) => {
+  const renderItem = ({ item }) => {
     const confirmarBorrado = () => {
       Alert.alert(
         "Eliminar Foto",
@@ -56,7 +57,7 @@ const renderItem = ({ item }) => {
     );
   };
 
-return (
+  return (
     <View style={SGS.containerCenter}>
       <FlatList
         data={fotos}

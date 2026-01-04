@@ -3,6 +3,8 @@ import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 // Permissions camera
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { guardarRetoEnDB } from "../services/retosService";
+// Permissions Locallization
+import * as Location from 'expo-location';
 //styles
 import { globalStyles as SGS } from "../global/styles/Styles.style";
 
@@ -20,6 +22,13 @@ const Home = () => {
   const [cameraPermission, cameraRequestPermission] = useCameraPermissions();
   const [fotoCapturada, setFotoCapturada] = useState(null);
   const cameraRef = useRef(null); // El mando empieza "desconectado" (null)
+  const [ladoCamara, setLadoCamara] = useState('back');
+  const [flash, setFlash] = useState('off');
+  const [linterna, setLinterna] = useState(false); // true o false
+  //localization
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
   useEffect(() => {
     // Pedimos permiso automáticamente al entrar
     cameraRequestPermission();
@@ -75,11 +84,33 @@ const Home = () => {
         </View>
 
         <View style={SGS.cameraContainer}>
-          <CameraView
-            ref={cameraRef}
-            style={SGS.camera}
-            facing="back"
-          ></CameraView>
+        <CameraView 
+          ref={cameraRef} 
+          style={SGS.camera} 
+          facing={ladoCamara}        // <--- Depende del estado
+          enableTorch={linterna}      // <--- Depende del estado
+        >
+          {/* Contenedor de botones sobre la cámara */}
+          <View style={SGS.controlesSuperiores}>
+            
+            {/* Botón Girar Cámara */}
+            <TouchableOpacity 
+              style={SGS.botonCircular} 
+              onPress={() => setLadoCamara(ladoCamara === 'back' ? 'front' : 'back')}
+            >
+              <Text style={{fontSize: 20}}>🔄</Text>
+            </TouchableOpacity>
+
+            {/* Botón Flash/Linterna */}
+            <TouchableOpacity 
+              style={[SGS.botonCircular, linterna && {backgroundColor: '#FFD700'}]} 
+              onPress={() => setLinterna(!linterna)}
+            >
+              <Text style={{fontSize: 20}}>{linterna ? '💡' : '🌑'}</Text>
+            </TouchableOpacity>
+
+          </View>
+        </CameraView>
 
           <TouchableOpacity style={SGS.button} onPress={tomarFoto}>
             <Text style={SGS.buttonText}>CAPTURAR RETO 📸</Text>
