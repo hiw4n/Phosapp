@@ -15,8 +15,10 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Esta aplicación necesita acceso a la cámara para completar los retos."
-      }
+        "NSCameraUsageDescription": "Esta aplicación necesita acceso a la cámara para completar los retos.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.hiw4n.phosapp"
     },
     "android": {
       "package": "com.hiw4n.phosapp",
@@ -24,7 +26,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -44,6 +50,11 @@
           "microphonePermission": "Permitir que Phosapp use el micrófono"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "af49ab79-2501-4546-a5f8-bb1c37c1ff69"
+      }
+    }
   }
 }
