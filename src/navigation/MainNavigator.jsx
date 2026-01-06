@@ -10,6 +10,7 @@ import { globalStyles as SGS, COLORS as SC } from '../global/styles/Styles.style
 import Home from '../screens/Home';
 import Gallery from '../screens/Gallery';
 import MyPhotos from '../screens/MyPhotos';
+import Profile from '../screens/Profile';
 
 
 const Tab = createBottomTabNavigator();
@@ -26,6 +27,7 @@ const MainNavigator = () => {
             if (route.name === 'Inicio') iconName = 'home-outline';
             else if (route.name === 'Comunidad') iconName = 'earth-outline';
             else if (route.name === 'Mis Fotos') iconName = 'images-outline';
+            else if (route.name === 'Perfil') iconName = 'person-outline';
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: SC.accent,
@@ -38,6 +40,7 @@ const MainNavigator = () => {
         <Tab.Screen name="Inicio" component={Home} />
         <Tab.Screen name="Comunidad" component={Gallery} />
         <Tab.Screen name="Mis Fotos" component={MyPhotos} />
+        <Tab.Screen name="Perfil" component={Profile} />
       </Tab.Navigator>
     </NavigationContainer>
   );
