@@ -1,19 +1,16 @@
 import { db } from "../db/init";
 
-export const guardarRetoEnDB = (titulo, imagen) => {
+export const guardarRetoEnDB = (titulo, imagen, ubicacion) => {
   // Verificamos que la base de datos esté lista
   if (!db) {
     console.log("La base de datos no está lista");
     return;
   }
 
-  // 2. Aquí ejecutamos el SQL para INSERTAR
-  // ¿Cómo completarías la frase SQL dentro de los paréntesis?
-  db.runSync("INSERT INTO retos (titulo, imagen) VALUES (?, ?);", [
-    titulo,
-    imagen,
-  ]);
-
+  // Aquí ejecutamos el SQL para INSERTAR
+  db.runSync("INSERT INTO retos (titulo, imagen, ubicacion) VALUES (?, ?, ?);", 
+    [ titulo, imagen, ubicacion || "Ubicación desconocida",]
+  );
   console.log("✅ Reto guardado en SQLite");
 };
 
@@ -37,3 +34,11 @@ export const eliminarRetoDeDB = (id) => {
 
   console.log(`🗑️ Reto con id ${id} eliminado de SQLite`);
 }
+
+export const obtenerEstadisticas = () => {
+  if (!db) return { total: 0 };
+  
+  // Ejecutamos el conteo
+  const resultado = db.getFirstSync("SELECT COUNT(*) as total FROM retos;");
+  return resultado; // Devuelve algo como { total: 5 }
+};

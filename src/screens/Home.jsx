@@ -20,6 +20,7 @@ const Home = () => {
 
   const [reto, setReto] = useState("¿Listo para un reto?");
   const [location, setLocation] = useState(null);
+  const [ciudad, setCiudad] = useState("Ubicación desconocida");
   const [errorMsg, setErrorMsg] = useState(null);
   // Persmisions camera ---------------------------------------- START
   const [fotoCapturada, setFotoCapturada] = useState(null);
@@ -46,6 +47,15 @@ const Home = () => {
         let actualLocation = await Location.getCurrentPositionAsync({});
         setLocation(actualLocation);
         console.log("📍 Ubicación obtenida:", actualLocation.coords.latitude, actualLocation.coords.longitude);
+        let address = await Location.reverseGeocodeAsync({
+          latitude: actualLocation.coords.latitude,
+          longitude: actualLocation.coords.longitude
+        });
+        if (address.length > 0) {
+          const ciudad = address[0].city || address[0].region || "Ubicación desconocida";
+          setCiudad(ciudad);
+          console.log("🏙️ Estás en:", ciudad);
+        }
       })();
   }, []);
 
@@ -62,10 +72,14 @@ const Home = () => {
           base64: false, // Cambia a false si no necesitas el chorro de texto base64 para ahorrar memoria
           skipProcessing: false 
         };
+
+        // Reutilizamos la ciudad ya resuelta en el useEffect
+        const ciudadActual = ciudad || "Ubicación desconocida";
+
         const data = await cameraRef.current.takePictureAsync(opciones);
         setFotoCapturada(data.uri);
         console.log("Foto guardada en:", data.uri);
-        guardarRetoEnDB(reto, data.uri);
+        guardarRetoEnDB(reto, data.uri, ciudadActual);
       } catch (error) {
         console.log("Error al tomar foto:", error);
       }

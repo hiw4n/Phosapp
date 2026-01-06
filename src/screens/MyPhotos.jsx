@@ -124,6 +124,20 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     textAlign: 'center'
   },
+    locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    backgroundColor: 'rgba(0, 173, 181, 0.1)', // Un fondo azulado muy suave
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 20,
+  },
+  locationText: {
+    color: '#EEEEEE',
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
 });
 
 export default MyPhotos;
