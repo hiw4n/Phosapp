@@ -1,0 +1,182 @@
+[
+  {
+    "id": "reto-52s-01",
+    "title": "Punto, línea y forma",
+    "description": "Incluir conscientemente los tres elementos básicos de la composición (punto, línea y forma) de manera que sean parte fundamental de la imagen y guíen la mirada del espectador.",
+    "technical_objective": "Elementos básicos de composición",
+    "difficulty": "Principiante",
+    "points": 10,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-52s-02",
+    "title": "Bokeh / Desenfoque",
+    "description": "Practicar la profundidad de campo abriendo el diafragma para conseguir que el fondo de la fotografía salga desenfocado, logrando un énfasis por enfoque selectivo sobre el sujeto.",
+    "technical_objective": "Profundidad de campo y apertura de diafragma",
+    "difficulty": "Principiante",
+    "points": 10,
+    "category": "Técnico"
+  },
+  {
+    "id": "reto-52s-03",
+    "title": "Acento de color",
+    "description": "Realizar una fotografía donde un color sea claramente más importante que el resto, otorgando el protagonismo visual al sujeto principal a través del contraste cromático.",
+    "technical_objective": "Teoría y psicología del color",
+    "difficulty": "Principiante",
+    "points": 15,
+    "category": "Temático"
+  },
+  {
+    "id": "reto-12p-11",
+    "title": "Sinécdoque y plano detalle",
+    "description": "Utilizar el plano detalle para mostrar solo una parte significativa del sujeto, de modo que esa fracción sea suficiente para evocar o representar la totalidad del mismo.",
+    "technical_objective": "Plano detalle y narrativa visual",
+    "difficulty": "Intermedio",
+    "points": 20,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-12p-12",
+    "title": "Plano cenital y plano nadir",
+    "description": "Forzar puntos de vista extremos realizando fotografías desde arriba hacia abajo (cenital) o desde abajo hacia arriba (nadir), rompiendo la perspectiva habitual a la altura de los ojos.",
+    "technical_objective": "Ángulos de cámara y encuadre",
+    "difficulty": "Intermedio",
+    "points": 15,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-12p-13",
+    "title": "Perspectiva Forzada",
+    "description": "Crear ilusiones ópticas mediante la yuxtaposición de elementos en diferentes planos para que parezca que interactúan entre sí, engañando al ojo con la escala y la distancia.",
+    "technical_objective": "Composición y gestión de planos",
+    "difficulty": "Intermedio",
+    "points": 20,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-12p-14",
+    "title": "Repetición y ritmo",
+    "description": "Capturar escenas donde el uso de figuras similares repetidas genere un flujo visual o dinamismo, pudiendo incluir una anomalía que rompa dicho patrón para crear un punto focal.",
+    "technical_objective": "Recursos compositivos (Ritmo, Cadencia, Patrones)",
+    "difficulty": "Intermedio",
+    "points": 20,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-12p-15",
+    "title": "Puntos óptimos de anclaje",
+    "description": "Organizar los elementos de la escena llevándolos al límite de los márgenes de seguridad imaginarios del encuadre para maximizar el equilibrio y el recorrido visual.",
+    "technical_objective": "Equilibrio visual y optimización de encuadre",
+    "difficulty": "Avanzado",
+    "points": 25,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-12p-16",
+    "title": "El equilibrio de la simetría",
+    "description": "Buscar escenas con una distribución equilibrada de elementos a ambos lados de un eje (vertical, horizontal o diagonal) para transmitir armonía y orden.",
+    "technical_objective": "Composición simétrica y leyes de la Gestalt",
+    "difficulty": "Intermedio",
+    "points": 15,
+    "category": "Compositivo"
+  },
+  {
+    "id": "reto-12p-18",
+    "title": "Motion Blur",
+    "description": "Utilizar tiempos de obturación largos con la cámara estática para que los elementos móviles aparezcan difusos o borrosos, mientras el entorno permanece nítido.",
+    "technical_objective": "Control de velocidad de obturación",
+    "difficulty": "Avanzado",
+    "points": 25,
+    "category": "Técnico"
+  },
+  {
+    "id": "reto-12p-19",
+    "title": "Jugando con la apofenia",
+    "description": "Presentar un díptico de dos fotos sin conexión aparente que, al ser mostradas juntas, generen una nueva narrativa o significado mediante la percepción de patrones.",
+    "technical_objective": "Narrativa visual y percepción",
+    "difficulty": "Avanzado",
+    "points": 30,
+    "category": "Creativo"
+  },
+  {
+    "id": "reto-12p-20",
+    "title": "Edges",
+    "description": "Fotografiar 'límites' o situaciones extremas, ya sean físicos (un acantilado), temporales o conceptuales (sentimientos extremos o etapas de la vida).",
+    "technical_objective": "Conceptualización y composición avanzada",
+    "difficulty": "Avanzado",
+    "points": 35,
+    "category": "Creativo"
+  },
+  {
+    "id": "reto-12p25-02",
+    "title": "Suavemente iluminado",
+    "description": "Realizar fotografías utilizando luz suave (proveniente de fuentes grandes o difusas) para conseguir sombras ligeras y transiciones graduales en el sujeto.",
+    "technical_objective": "Calidad de la luz y gestión de sombras",
+    "difficulty": "Intermedio",
+    "points": 20,
+    "category": "Iluminación"
+  },
+  {
+    "id": "reto-12p25-03",
+    "title": "Movimiento Deportivo",
+    "description": "Aplicar técnicas como el barrido o la congelación para representar el dinamismo en cualquier disciplina deportiva.",
+    "technical_objective": "Captura de movimiento y técnica deportiva",
+    "difficulty": "Intermedio",
+    "points": 20,
+    "category": "Técnico"
+  },
+  {
+    "id": "reto-12p25-04",
+    "title": "Dar vida a objetos",
+    "description": "Fotografiar objetos cotidianos inanimados de forma creativa para que parezcan tener vida, personalidad o despierten empatía en el espectador.",
+    "technical_objective": "Creatividad y visión fotográfica",
+    "difficulty": "Avanzado",
+    "points": 25,
+    "category": "Creativo"
+  },
+  {
+    "id": "reto-12p25-06",
+    "title": "Luz diabólica",
+    "description": "Estudiar la dirección de la luz realizando fotografías iluminadas desde abajo (luz nadir), una dirección inusual que altera dramáticamente el aspecto del sujeto.",
+    "technical_objective": "Dirección de la luz",
+    "difficulty": "Intermedio",
+    "points": 20,
+    "category": "Iluminación"
+  },
+  {
+    "id": "reto-52s-14",
+    "title": "Clave baja",
+    "description": "Realizar una fotografía con predominancia de tonos oscuros donde la mayoría del histograma se sitúe a la izquierda, ideal para retratos dramáticos o misteriosos.",
+    "technical_objective": "Control de exposición y histograma",
+    "difficulty": "Avanzado",
+    "points": 25,
+    "category": "Técnico"
+  },
+  {
+    "id": "reto-52s-16",
+    "title": "Imitar a Madoz",
+    "description": "Crear una obra de estilo surrealista y minimalista inspirada en Chema Madoz, conectando objetos cotidianos para generar nuevos significados sin usar retoque digital.",
+    "technical_objective": "Creatividad conceptual y bodegón",
+    "difficulty": "Avanzado",
+    "points": 30,
+    "category": "Creativo"
+  },
+  {
+    "id": "reto-52s-18",
+    "title": "Contraluz",
+    "description": "Situar la fuente de luz por detrás del sujeto para crear siluetas o resaltar contornos, gestionando el fuerte contraste entre el fondo y el primer plano.",
+    "technical_objective": "Medición de luz y gestión de contraste",
+    "difficulty": "Intermedio",
+    "points": 15,
+    "category": "Técnico"
+  },
+  {
+    "id": "reto-52s-22",
+    "title": "Hora dorada vs azul",
+    "description": "Capturar la luz cálida y direccional del atardecer/amanecer (hora dorada) y la luz fría y difusa del crepúsculo (hora azul).",
+    "technical_objective": "Temperatura de color y luz natural",
+    "difficulty": "Principiante",
+    "points": 15,
+    "category": "Paisaje"
+  }
+]
