@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './src/services/firebaseConfig';
-
-// Pantallas
+import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import MainTabNavigator from './src/navigation/MainNavigator'; // Tu navegación actual
+import HomeScreen from './src/screens/Home';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Suscribirse al estado de Firebase
-    const unsubscribe = onAuthStateChanged(auth, (userFirebase) => {
-      setUser(userFirebase);
-    });
-    return unsubscribe; // Limpiar al desmontar
-  }, []);
-
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user ? (
-          // Si hay usuario, vamos a la App
-          <Stack.Screen name="App" component={MainTabNavigator} />
-        ) : (
-          // Si no, al Login
-          <Stack.Screen name="Auth" component={LoginScreen} />
-        )}
+      <Stack.Navigator initialRouteName="Welcome">
+        {/* La primera pantalla ahora es Welcome */}
+        <Stack.Screen 
+          name="Welcome" 
+          component={WelcomeScreen} 
+          options={{ headerShown: false }} 
+        />
+        
+        <Stack.Screen 
+          name="Login" 
+          component={LoginScreen} 
+          options={{ title: 'Iniciar Sesión' }} 
+        />
+        
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }} 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

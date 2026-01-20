@@ -1,161 +1,67 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
-// Permissions camera
-import { CameraView, useCameraPermissions } from "expo-camera";
-import { guardarRetoEnDB } from "../services/retosService";
-// Permissions Locallization
-import * as Location from "expo-location";
-//Global styles
-import { globalStyles as SGS } from "../global/styles/Styles.style";
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, ActivityIndicator, Text } from 'react-native';
+import { db } from '../services/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
+import ChallengeCard from '../components/ChallengeCard';
+import MyButton from '../components/MyButtons';
+import { globalStyles as styles } from '../global/styles/Styles.style';
 
-const Home = () => {
-  //TODO: Retox, cambiar más adelante por data dinámica.
-  const retos = [
-    "Retrato con luz de ventana",
-    "Líneas de fuga en la calle",
-    "Fotografía en Blanco y Negro",
-    "Primer plano de una textura",
-    "Captura un reflejo en el agua",
-  ];
+const HomeScreen = () => {
+  const [challenge, setChallenge] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [reto, setReto] = useState("¿Listo para un reto?");
-  const [location, setLocation] = useState(null);
-  const [ciudad, setCiudad] = useState("Ubicación desconocida");
-  const [errorMsg, setErrorMsg] = useState(null);
-  // Persmisions camera ---------------------------------------- START
-  const [fotoCapturada, setFotoCapturada] = useState(null);
-  const [ladoCamara, setLadoCamara] = useState('back');
-  const [flash, setFlash] = useState('off');
-  const [linterna, setLinterna] = useState(false); // true o false
-  
-  const cameraRef = useRef(null); // El mando empieza "desconectado" (null)
-  
-  const [cameraPermission, cameraRequestPermission] = useCameraPermissions();
-  
-  useEffect(() => {
-    // Pedimos permiso automáticamente al entrar
-    cameraRequestPermission();
-    // permisos localización ------------
-    (async () => {
-        // Pedimos permiso para usar el GPS "en primer plano" (mientras la app se usa)
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setErrorMsg('Permiso de ubicación denegado ❌');
-          return;
-        }
-        // Si tenemos permiso, obtenemos la posición actual
-        let actualLocation = await Location.getCurrentPositionAsync({});
-        setLocation(actualLocation);
-        console.log("📍 Ubicación obtenida:", actualLocation.coords.latitude, actualLocation.coords.longitude);
-        let address = await Location.reverseGeocodeAsync({
-          latitude: actualLocation.coords.latitude,
-          longitude: actualLocation.coords.longitude
-        });
-        if (address.length > 0) {
-          const ciudad = address[0].city || address[0].region || "Ubicación desconocida";
-          setCiudad(ciudad);
-          console.log("🏙️ Estás en:", ciudad);
-        }
-      })();
-  }, []);
+  const fetchRandomChallenge = async () => {
+    setLoading(true);
+    try {
+      const querySnapshot = await getDocs(collection(db, "challenges"));
+      const challengesList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
 
-  const generarReto = () => {
-    const indiceAleatorio = Math.floor(Math.random() * retos.length);
-    setReto(retos[indiceAleatorio]);
-  };
-  const tomarFoto = async () => {
-    // Verificamos que el "mando" (ref) esté conectado
-    if (cameraRef.current) {
-      try {
-        const opciones = { 
-          quality: 0.7, 
-          base64: false, // Cambia a false si no necesitas el chorro de texto base64 para ahorrar memoria
-          skipProcessing: false 
-        };
-
-        // Reutilizamos la ciudad ya resuelta en el useEffect
-        const ciudadActual = ciudad || "Ubicación desconocida";
-
-        const data = await cameraRef.current.takePictureAsync(opciones);
-        setFotoCapturada(data.uri);
-        console.log("Foto guardada en:", data.uri);
-        guardarRetoEnDB(reto, data.uri, ciudadActual);
-      } catch (error) {
-        console.log("Error al tomar foto:", error);
+      if (challengesList.length > 0) {
+        const random = challengesList[Math.floor(Math.random() * challengesList.length)];
+        setChallenge(random);
       }
+    } catch (error) {
+      console.error("Error al cargar retos:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (!cameraPermission) return <View />;
-  if (!cameraPermission.granted) {
+  useEffect(() => {
+    fetchRandomChallenge();
+  }, []);
+
+  if (loading) {
     return (
-      <View style={SGS.container}>
-        <Text style={{ textAlign: "center" }}>
-          Necesitamos tu permiso para mostrar la cámara
-        </Text>
-        <TouchableOpacity onPress={cameraRequestPermission} style={SGS.button}>
-          <Text>Dar Permiso</Text>
-        </TouchableOpacity>
+      <View style={[styles.container, { justifyContent: 'center' }]}>
+        <ActivityIndicator size="large" color="#00ADB5" />
       </View>
     );
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={SGS.containerCenter}>
-        <Text style={SGS.title}>Reto del día:</Text>
+    <ScrollView style={styles.container} contentContainerStyle={{ padding: 20 }}>
+      <Text style={[styles.title, { marginBottom: 20, textAlign: 'left' }]}>Reto del día</Text>
+      
+      <ChallengeCard challenge={challenge} />
 
-        <View style={SGS.card}>
-          <Text style={SGS.retoText}>{reto}</Text>
-        </View>
-
-        <View style={SGS.cameraContainer}>
-        <CameraView 
-          ref={cameraRef} 
-          style={SGS.camera} 
-          facing={ladoCamara}        // <--- Depende del estado
-          enableTorch={linterna}      // <--- Depende del estado
-        >
-          {/* Contenedor de botones sobre la cámara */}
-          <View style={SGS.controlesSuperiores}>
-            
-            {/* Botón Girar Cámara */}
-            <TouchableOpacity 
-              style={SGS.botonCircular} 
-              onPress={() => setLadoCamara(ladoCamara === 'back' ? 'front' : 'back')}
-            >
-              <Text style={{fontSize: 20}}>🔄</Text>
-            </TouchableOpacity>
-
-            {/* Botón Flash/Linterna */}
-            <TouchableOpacity 
-              style={[SGS.botonCircular, linterna && {backgroundColor: '#FFD700'}]} 
-              onPress={() => setLinterna(!linterna)}
-            >
-              <Text style={{fontSize: 20}}>{linterna ? '💡' : '🌑'}</Text>
-            </TouchableOpacity>
-
-          </View>
-        </CameraView>
-
-          <TouchableOpacity style={SGS.button} onPress={tomarFoto}>
-            <Text style={SGS.buttonText}>CAPTURAR RETO 📸</Text>
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity style={SGS.button} onPress={generarReto}>
-          <Text style={SGS.buttonText}>NUEVO RETO</Text>
-        </TouchableOpacity>
-
-        {fotoCapturada && (
-          <View style={SGS.containerCaptura}>
-            <Text style={SGS.text}>Tu captura:</Text>
-            <Image source={{ uri: fotoCapturada }} style={SGS.capture} />
-          </View>
-        )}
+      <View style={{ marginTop: 20 }}>
+        <MyButton 
+          title="CAMBIAR RETO" 
+          type="outline" 
+          onPress={fetchRandomChallenge} 
+        />
+        <MyButton 
+          title="ACEPTAR RETO Y HACER FOTO" 
+          onPress={() => console.log("Abrir Cámara...")} 
+          style={{ marginTop: 15 }}
+        />
       </View>
     </ScrollView>
   );
 };
 
-export default Home;
+export default HomeScreen;
