@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, TextInput, Alert, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
 import { signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 import { auth } from "../services/firebaseConfig";
@@ -10,6 +10,9 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const goToTabs = useCallback(() => {
+    navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+  }, [navigation]);
 
   // 1. LOGIN MANUAL (FIREBASE)
   const handleLogin = async () => {
@@ -21,6 +24,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("✅ Login Firebase OK");
+      goToTabs();
     } catch (error) {
       Alert.alert("Error", "Fallo de conexión o credenciales");
     } finally {
@@ -38,6 +42,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       await signInWithEmailAndPassword(auth, emailDemo, passDemo);
       console.log("✅ Login Demo Firebase OK");
+      goToTabs();
     } catch (error) {
       Alert.alert("Error", "No se pudo conectar con la cuenta demo");
     } finally {
@@ -51,6 +56,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       await signInAnonymously(auth);
       console.log("✅ Acceso Anónimo OK");
+      goToTabs();
     } catch (error) {
       Alert.alert("Error", "Debes activar 'Anónimo' en la consola de Firebase");
     } finally {
@@ -61,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
   // 4. ACCESO DIRECTO (Bypass Total - Sin Firebase)
   const accesoDirectoSinFirebase = () => {
     console.log("LOG: Accediendo en modo desarrollo (bypass Firebase)");
-    navigation.navigate("Home");
+    goToTabs();
   };
 
   return (

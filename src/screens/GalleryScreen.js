@@ -1,57 +1,68 @@
-import React, { useMemo } from 'react';
-import { View, FlatList, Image, RefreshControl, StyleSheet, Text } from 'react-native';
-import { usePhotos } from '../context/PhotoContext';
+import React, { useState, useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { Directory, Paths, File } from 'expo-file-system';
+import PhotoCard from '../components/PhotoCard'; // Importamos el componente
 
-const GalleryScreen = () => {
-  const { photos, isLoading, refreshPhotos } = usePhotos();
+export default function GalleryScreen() {
+  const [photos, setPhotos] = useState([]);
 
-  const formattedPhotos = useMemo(() => (
-    photos.map((photo) => ({
-      ...photo,
-      friendlyDate: photo.createdAt ? new Date(photo.createdAt).toLocaleDateString() : ''
-    }))
-  ), [photos]);
+  useFocusEffect(
+    useCallback(() => {
+      const loadPhotos = async () => {
+        try {
+          const documentsDir = new Directory(Paths.document);
+          documentsDir.create({ idempotent: true });
+          const files = await documentsDir.list();
+          const jpgPhotos = files
+            .filter(entry => entry instanceof File)
+            .filter(file => file.name?.toLowerCase().endsWith('.jpg'))
+            .map(file => file.uri);
+          
+          setPhotos(jpgPhotos.reverse());
+        } catch (error) {
+          console.error("Error cargando galería:", error);
+        }
+      };
+      loadPhotos();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mis Retos Capturados</Text>
-      {formattedPhotos.length === 0 && !isLoading ? (
-        <Text style={styles.empty}>Aún no has cumplido ningún reto.</Text>
+      {/* Header estilo Instagram */}
+      <View style={styles.headerNav}>
+        <Text style={styles.headerTitle}>PhosApp Feed</Text>
+      </View>
+
+      {photos.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No hay capturas recientes.</Text>
+        </View>
       ) : (
         <FlatList
-          data={formattedPhotos}
-          numColumns={2}
-          keyExtractor={(item) => item.uri}
-          refreshControl={(
-            <RefreshControl
-              colors={["#00ADB5"]}
-              refreshing={isLoading}
-              onRefresh={refreshPhotos}
-            />
-          )}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Image source={{ uri: item.uri }} style={styles.image} />
-              <Text style={styles.challenge}>{item.challengeTitle}</Text>
-              {item.friendlyDate ? (
-                <Text style={styles.date}>{item.friendlyDate}</Text>
-              ) : null}
-            </View>
-          )}
+          data={photos}
+          keyExtractor={(item) => item}
+          numColumns={1} // CAMBIO A UNA COLUMNA
+          renderItem={({ item }) => <PhotoCard photoUri={item} />}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#222831', padding: 10 },
-  title: { color: '#00ADB5', fontSize: 24, fontWeight: 'bold', marginVertical: 20, textAlign: 'center' },
-  card: { width: '48%', margin: '1%', backgroundColor: '#393E46', borderRadius: 12, overflow: 'hidden' },
-  image: { width: '100%', height: 180 },
-  challenge: { color: '#EEE', fontSize: 14, fontWeight: '600', paddingHorizontal: 8, paddingTop: 8 },
-  date: { color: '#B8B8B8', fontSize: 12, paddingHorizontal: 8, paddingBottom: 10 },
-  empty: { color: '#EEE', textAlign: 'center', marginTop: 50 }
+  container: { flex: 1, backgroundColor: '#121212' },
+  headerNav: {
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#333',
+    backgroundColor: '#121212',
+  },
+  headerTitle: { color: '#00ADB5', fontSize: 20, fontWeight: 'bold', letterSpacing: 1 },
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyText: { color: '#888', fontSize: 16 }
 });
-
-export default GalleryScreen;

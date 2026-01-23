@@ -1,86 +1,136 @@
 import React, { useState, useCallback } from 'react';
-import { View, FlatList, Image, TouchableOpacity, Dimensions, StyleSheet, Modal, Text, Button } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { Alert } from 'react-native';
-import { obtenerRetosDeDB, eliminarRetoDeDB } from '../services/retosService';
+import { View, FlatList, StyleSheet, Modal, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { globalStyles as SGS } from '../global/styles/Styles.style';
-
-// Obtenemos el ancho de la pantalla para calcular el tamaño de las fotos
-const { width } = Dimensions.get('window');
-const columnSize = width / 3; // Dividimos el ancho entre 3 columnas
+import PhotoCard from '../components/PhotoCard';
+import * as FileSystem from 'expo-file-system';
 
 const MyPhotos = () => {
   const [fotos, setFotos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
+  const navigation = useNavigation();
 
-
-  useFocusEffect(
+  // Carga los datos de la DB cada vez que entras a la pantalla
+useFocusEffect(
     useCallback(() => {
-      const datos = obtenerRetosDeDB();
-      setFotos(datos);
+      const cargarArchivosReales = async () => {
+        try {
+          const docUri = FileSystem.documentDirectory;
+          const entries = await FileSystem.readDirectoryAsync(docUri);
+          
+          const jpgPhotos = entries
+            .filter((entry) => {
+              return entry.toLowerCase().endsWith('.jpg') || entry.toLowerCase().endsWith('.jpeg');
+            })
+            .map((fileName) => ({
+              id: fileName,
+              imagen: `${docUri}${fileName}`,
+              titulo: 'Reto Completado'
+            }));
+
+          console.log("Fotos cargadas:", jpgPhotos.length);
+          setFotos(jpgPhotos.reverse());
+        } catch (e) {
+          console.log('Error leyendo archivos:', e);
+        }
+      };
+      cargarArchivosReales();
     }, [])
   );
 
-  const abrirVisor = (item) => {
-    setFotoSeleccionada(item); // Guardamos la foto pulsada
-    setModalVisible(true);     // Abrimos la ventana
-  };
+  const abrirVisor = useCallback((item) => {
+    setFotoSeleccionada(item);
+    setModalVisible(true);
+  }, []);
 
-  const renderItem = ({ item }) => {
-    const confirmarBorrado = () => {
-      Alert.alert(
-        "Eliminar Foto",
-        "¿Estás seguro de que quieres borrar esta captura?",
-        [
-          { text: "Cancelar", style: "cancel" },
-          { 
-            text: "Eliminar", 
-            style: "destructive", 
-            onPress: () => {
-              eliminarRetoDeDB(item.id);
-              setFotos(obtenerRetosDeDB());
-            } 
-          }
-        ]
-      );
-    };
+  const cerrarVisor = useCallback(() => setModalVisible(false), []);
 
-    return (
-      <TouchableOpacity 
-        style={styles.gridItem} 
-        onPress={() => abrirVisor(item)}      // <--- AHORA SÍ CONECTADO (Pulsación corta)
-        onLongPress={confirmarBorrado}      // <--- CONECTADO (Pulsación larga)
-      >
-        <Image source={{ uri: item.imagen }} style={styles.imageGrid} />
-      </TouchableOpacity>
+  const borrarFoto = useCallback(async (foto) => {
+    try {
+      await FileSystem.deleteAsync(foto.imagen, { idempotent: true });
+      setFotos((prev) => prev.filter((item) => item.id !== foto.id));
+      setModalVisible(false);
+    } catch (error) {
+      console.error('No se pudo borrar la captura:', error);
+      Alert.alert('Error', 'No pudimos borrar la foto.');
+    }
+  }, []);
+
+  const confirmarBorrado = useCallback((foto) => {
+    Alert.alert(
+      "Eliminar Foto",
+      "¿Estás seguro de que quieres borrar esta captura?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { 
+          text: "Eliminar", 
+          style: "destructive", 
+          onPress: () => borrarFoto(foto)
+        }
+      ]
     );
-  };
+  }, [borrarFoto]);
+
+  const handleOpenCamera = useCallback(() => {
+    navigation.navigate('Camera');
+  }, [navigation]);
+
+  const renderEmptyComponent = useCallback(() => (
+    <View style={styles.emptyState}>
+      <Text style={styles.emptyText}>Todavía no tienes capturas guardadas.</Text>
+      <TouchableOpacity style={[SGS.button, styles.emptyButton]} onPress={handleOpenCamera}>
+        <Text style={SGS.buttonText}>ABRIR CÁMARA</Text>
+      </TouchableOpacity>
+    </View>
+  ), [handleOpenCamera]);
+
+  const renderItem = useCallback(({ item }) => (
+    <TouchableOpacity 
+      onPress={() => abrirVisor(item)}
+      onLongPress={() => confirmarBorrado(item)}
+      style={styles.cardContainer}
+    >
+      <PhotoCard 
+        photoUri={item.imagen} 
+        isGrid={true} // El modo compacto que creamos
+      />
+    </TouchableOpacity>
+  ), [abrirVisor, confirmarBorrado]);
 
   return (
-    <View style={SGS.containerCenter}>
+    <View style={[SGS.containerCenter, { backgroundColor: '#121212' }]}>
       <FlatList
-        data={fotos}
+        data={fotos} // Usamos 'fotos' (estado de la DB)
         keyExtractor={(item) => item.id.toString()}
+        numColumns={2} // Dos columnas
+        contentContainerStyle={styles.listContent}
         renderItem={renderItem}
-        numColumns={3}
-        contentContainerStyle={styles.gridContainer}
+        ListEmptyComponent={renderEmptyComponent}
       />
 
-      {/* MODAL: Esta es la pieza que faltaba en tu return */}
+      {/* Visor de foto a pantalla completa */}
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={false}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={cerrarVisor}
       >
         <View style={styles.modalContent}>
           {fotoSeleccionada && (
             <>
               <Image source={{ uri: fotoSeleccionada.imagen }} style={styles.fullImage} />
               <Text style={styles.modalTitle}>{fotoSeleccionada.titulo}</Text>
-              <TouchableOpacity style={SGS.button} onPress={() => setModalVisible(false)}>
-                <Text style={SGS.buttonText}>CERRAR</Text>
+              
+              <TouchableOpacity 
+                style={[SGS.button, { backgroundColor: '#FF2E63', marginBottom: 10 }]} 
+                onPress={() => confirmarBorrado(fotoSeleccionada)}
+              >
+                <Text style={SGS.buttonText}>ELIMINAR CAPTURA</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={SGS.button} onPress={cerrarVisor}>
+                <Text style={SGS.buttonText}>VOLVER</Text>
               </TouchableOpacity>
             </>
           )}
@@ -91,53 +141,48 @@ const MyPhotos = () => {
 };
 
 const styles = StyleSheet.create({
-  gridContainer: {
-    paddingHorizontal: 2,
+  listContent: {
+    paddingHorizontal: 5,
+    paddingTop: 10,
   },
-  gridItem: {
-    width: columnSize,
-    height: columnSize, // Hacemos que sea un cuadrado perfecto
-    padding: 1, // Pequeña separación entre fotos
+  cardContainer: {
+    flex: 0.5, // Asegura que cada columna ocupe la mitad exacta
   },
-  imageGrid: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+  emptyState: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 60,
+    gap: 16,
+  },
+  emptyText: {
+    color: '#EEE',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  emptyButton: {
+    minWidth: 180,
   },
   modalContent: {
     flex: 1,
-    backgroundColor: '#222831',
+    backgroundColor: '#121212',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20
   },
   fullImage: {
     width: '100%',
-    height: '70%',
+    height: '60%',
     borderRadius: 15,
-    resizeMode: 'contain' // Para ver la foto completa sin recortes
+    resizeMode: 'cover'
   },
   modalTitle: {
     color: '#00ADB5',
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 20,
     textAlign: 'center'
-  },
-    locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    backgroundColor: 'rgba(0, 173, 181, 0.1)', // Un fondo azulado muy suave
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 20,
-  },
-  locationText: {
-    color: '#EEEEEE',
-    fontSize: 16,
-    fontStyle: 'italic',
-  },
+  }
 });
 
 export default MyPhotos;

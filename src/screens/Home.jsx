@@ -6,10 +6,18 @@ import { collection, getDocs } from 'firebase/firestore';
 import ChallengeCard from '../components/ChallengeCard';
 import MyButton from '../components/MyButtons';
 import { globalStyles as styles } from '../global/styles/Styles.style';
+import localChallenges from '../db/retos.json';
+
+const pickRandomChallenge = (list) => {
+  if (!list?.length) return null;
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+};
 
 const HomeScreen = () => {
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [statusMessage, setStatusMessage] = useState('');
   const navigation = useNavigation(); // Inicializa la navegación aquí
 
   const fetchRandomChallenge = async () => {
@@ -24,9 +32,19 @@ const HomeScreen = () => {
       if (challengesList.length > 0) {
         const random = challengesList[Math.floor(Math.random() * challengesList.length)];
         setChallenge(random);
+        setStatusMessage('');
+        return;
       }
+      throw new Error('Sin datos remotos');
     } catch (error) {
-      console.error("Error al cargar retos:", error);
+      console.warn("Error al cargar retos desde Firestore, usando modo offline:", error?.message ?? error);
+      const backup = pickRandomChallenge(localChallenges);
+      if (backup) {
+        setChallenge(backup);
+        setStatusMessage('Modo offline: reto cargado desde la base local.');
+      } else {
+        setStatusMessage('No se pudieron cargar retos locales.');
+      }
     } finally {
       setLoading(false);
     }
@@ -47,6 +65,9 @@ const HomeScreen = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: 20 }}>
       <Text style={[styles.title, { marginBottom: 20, textAlign: 'left' }]}>Reto del día</Text>
+      {statusMessage ? (
+        <Text style={{ color: '#F9ED69', marginBottom: 10 }}>{statusMessage}</Text>
+      ) : null}
       
       <ChallengeCard challenge={challenge} />
 

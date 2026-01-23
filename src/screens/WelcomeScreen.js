@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 // 1. Importamos el hook useNavigation
 import { useNavigation } from '@react-navigation/native'; 
@@ -7,7 +7,10 @@ import MyButton from '../components/MyButtons';
 const WelcomeScreen = () => { // Quitamos { navigation } de aquí
   
   // 2. Inicializamos la navegación dentro del componente
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+  const goToTabs = useCallback(() => {
+    navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -25,7 +28,7 @@ const WelcomeScreen = () => { // Quitamos { navigation } de aquí
         <MyButton 
           title="ACCESO DIRECTO (MODO LOCAL)" 
           type="outline"
-          onPress={() => navigation.navigate('Home')} 
+          onPress={goToTabs}
         />
       </View>
       
