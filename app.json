@@ -46,7 +46,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Permitir que Phosapp use la cámara",
+          "cameraPermission": "PhosApp necesita acceso a la cámara para que puedas completar los retos fotográficos.",
           "microphonePermission": "Permitir que Phosapp use el micrófono"
         }
       ]

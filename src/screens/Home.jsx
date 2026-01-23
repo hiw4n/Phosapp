@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native'; // Importa el hook
 import { View, ScrollView, ActivityIndicator, Text } from 'react-native';
 import { db } from '../services/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
@@ -9,6 +10,7 @@ import { globalStyles as styles } from '../global/styles/Styles.style';
 const HomeScreen = () => {
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation(); // Inicializa la navegación aquí
 
   const fetchRandomChallenge = async () => {
     setLoading(true);
@@ -55,8 +57,8 @@ const HomeScreen = () => {
           onPress={fetchRandomChallenge} 
         />
         <MyButton 
-          title="ACEPTAR RETO Y HACER FOTO" 
-          onPress={() => console.log("Abrir Cámara...")} 
+          title="ACEPTAR RETO Y HACER FOTO"
+          onPress={() => navigation.navigate('Camera', { challengeTitle: challenge?.title ?? 'Reto del día' })} 
           style={{ marginTop: 15 }}
         />
       </View>
@@ -64,4 +66,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default HomeScreen;  

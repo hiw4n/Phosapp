@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "459949474518",
+    "project_id": "phosapp-3ae57",
+    "storage_bucket": "phosapp-3ae57.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459949474518:android:dde590fc87649f0ec53f77",
+        "android_client_info": {
+          "package_name": "com.hiw4n.phosapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNtrGHXUQS8gzrcXlHy_IxbtCYo2M6Zmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
