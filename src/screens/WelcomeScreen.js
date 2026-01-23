@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// 1. Importamos el hook useNavigation
 import { useNavigation } from '@react-navigation/native'; 
 import MyButton from '../components/MyButtons';
 
-const WelcomeScreen = () => { // Quitamos { navigation } de aquí
+const WelcomeScreen = () => { 
   
-  // 2. Inicializamos la navegación dentro del componente
   const navigation = useNavigation();
   const goToTabs = useCallback(() => {
     navigation.reset({ index: 0, routes: [{ name: 'Main' }] });

@@ -29,7 +29,6 @@ const Profile = () => {
           <Text style={styles.statLabel}>Retos Completados</Text>
         </View>
         
-        {/* Aquí podrías añadir más medallas según el número de fotos */}
         <Text style={styles.rankText}>
           Rango: {stats.total > 10 ? 'Maestro Fotógrafo 🏆' : 'Aprendiz 📷'}
         </Text>

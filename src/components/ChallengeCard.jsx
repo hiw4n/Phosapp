@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { COLORS } from '../global/styles/Styles.style'; // Usando tus constantes del repo
 
 const ChallengeCard = ({ challenge }) => {
   if (!challenge) return null;

@@ -22,13 +22,10 @@ export const initDB = () => {
         ubicacion TEXT
         );
     `);
-  // 2. TRUCO PRO: Intentamos añadir la columna por si la tabla ya existía de antes
-  // Esto evita que la app falle si ya tenías la tabla vieja sin 'ubicacion'
   try {
     db.execSync("ALTER TABLE retos ADD COLUMN ubicacion TEXT;");
     console.log("✅ Columna 'ubicacion' añadida con éxito");
   } catch (e) {
-    // Si ya existe, dará error, pero lo ignoramos tranquilamente
     console.log("ℹ️ La columna 'ubicacion' ya existe, saltando...");
   }
     console.log("🗄️ Base de datos inicializada correctamente");

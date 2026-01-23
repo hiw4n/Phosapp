@@ -6,12 +6,10 @@ const { width } = Dimensions.get('window');
 const PhotoCard = ({ photoUri, isGrid }) => {
   const fileName = photoUri.split('/').pop();
   
-  // Si es cuadrícula, la imagen es más pequeña, si no, es del ancho total
   const imageSize = isGrid ? (width / 2) - 15 : width;
 
   return (
     <View style={[styles.card, isGrid && styles.cardGrid]}>
-      {/* Solo mostramos la cabecera si NO es cuadrícula (estilo Feed) */}
       {!isGrid && (
         <View style={styles.header}>
           <View style={styles.avatar}><Text style={styles.avatarText}>P</Text></View>
@@ -27,7 +25,6 @@ const PhotoCard = ({ photoUri, isGrid }) => {
         style={{ width: imageSize, height: imageSize, backgroundColor: '#333', borderRadius: isGrid ? 8 : 0 }} 
       />
 
-      {/* En cuadrícula mostramos menos info para no saturar */}
       <View style={styles.footer}>
         <Text style={[styles.description, isGrid && styles.descriptionGrid]}>
           {isGrid ? 'Reto' : <Text style={styles.bold}>Reto:</Text>} {fileName.includes('photo') ? 'Luz' : 'Blur'}

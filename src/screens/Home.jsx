@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native'; // Importa el hook
+import { useNavigation } from '@react-navigation/native'; 
 import { View, ScrollView, ActivityIndicator, Text } from 'react-native';
 import { db } from '../services/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';

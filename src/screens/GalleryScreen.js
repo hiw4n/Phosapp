@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Directory, Paths, File } from 'expo-file-system';
-import PhotoCard from '../components/PhotoCard'; // Importamos el componente
+import PhotoCard from '../components/PhotoCard'; 
 
 export default function GalleryScreen() {
   const [photos, setPhotos] = useState([]);
@@ -30,7 +30,6 @@ export default function GalleryScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header estilo Instagram */}
       <View style={styles.headerNav}>
         <Text style={styles.headerTitle}>PhosApp Feed</Text>
       </View>
@@ -43,7 +42,7 @@ export default function GalleryScreen() {
         <FlatList
           data={photos}
           keyExtractor={(item) => item}
-          numColumns={1} // CAMBIO A UNA COLUMNA
+          numColumns={1}
           renderItem={({ item }) => <PhotoCard photoUri={item} />}
           showsVerticalScrollIndicator={false}
         />

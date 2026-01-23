@@ -13,23 +13,19 @@ export default function CameraScreen({ navigation, route }) {
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
-        // 1. Capturar la foto (genera una URI temporal)
         const photo = await cameraRef.current.takePictureAsync();
         
         if (!photo || !photo.uri) {
           throw new Error("No se pudo obtener la URI de la foto");
         }
 
-        // 2. Preparar la carpeta de Documentos y crear el archivo destino
         const documentsDir = new Directory(Paths.document);
         documentsDir.create({ idempotent: true });
         const fileName = `photo_${Date.now()}.jpg`;
         const destinationFile = new File(documentsDir, fileName);
         
-        // 4. USAMOS LA RUTA DIRECTA: Creamos el objeto File desde la URI temporal
         const sourceFile = new File(photo.uri);
         
-        // 5. Mover el archivo
         await sourceFile.move(destinationFile);
 
         await addPhoto({

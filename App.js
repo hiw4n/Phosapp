@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,12 +12,10 @@ import CameraScreen from './src/screens/CameraScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import Profile from './src/screens/Profile';
-import MyPhotos from './src/screens/MyPhotos';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// 1. Definimos las pestañas inferiores
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -37,13 +35,11 @@ function MyTabs() {
     >
       <Tab.Screen name="Inicio" component={Home} />
       <Tab.Screen name="Galería" component={GalleryScreen} />
-      {/* <Tab.Screen name="Mis Fotos" component={MyPhotos} /> */}
       <Tab.Screen name="Perfil" component={Profile} />
     </Tab.Navigator>
   );
 }
 
-// 2. Navegador principal (Stack)
 export default function App() {
   useEffect(() => {
     initDB();

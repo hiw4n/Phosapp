@@ -11,7 +11,6 @@ const MyPhotos = () => {
   const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
   const navigation = useNavigation();
 
-  // Carga los datos de la DB cada vez que entras a la pantalla
 useFocusEffect(
     useCallback(() => {
       const cargarArchivosReales = async () => {
@@ -93,7 +92,7 @@ useFocusEffect(
     >
       <PhotoCard 
         photoUri={item.imagen} 
-        isGrid={true} // El modo compacto que creamos
+        isGrid={true}
       />
     </TouchableOpacity>
   ), [abrirVisor, confirmarBorrado]);

@@ -3,7 +3,6 @@ import { View, Text, TextInput, Alert, ActivityIndicator, StyleSheet, ScrollView
 import { signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 import { auth } from "../services/firebaseConfig";
 import MyButton from "../components/MyButtons";
-// Ruta corregida a tus estilos globales
 import { globalStyles as styles } from '../global/styles/Styles.style';
 
 const LoginScreen = ({ navigation }) => {
@@ -50,7 +49,6 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  // 3. MODO FANTASMA (Firebase Anónimo)
   const loginAnonimo = async () => {
     setLoading(true);
     try {
@@ -64,7 +62,6 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  // 4. ACCESO DIRECTO (Bypass Total - Sin Firebase)
   const accesoDirectoSinFirebase = () => {
     console.log("LOG: Accediendo en modo desarrollo (bypass Firebase)");
     goToTabs();
@@ -97,10 +94,8 @@ const LoginScreen = ({ navigation }) => {
           <ActivityIndicator size="large" color="#00ADB5" />
         ) : (
           <View style={{ width: '100%', marginTop: 10 }}>
-            {/* Botón Principal */}
             <MyButton title="ENTRAR" onPress={handleLogin} />
             
-            {/* Botón Test Firebase que pedías recuperar */}
             <MyButton
               title="LOGIN TEST (FIREBASE)"
               type="outline"
@@ -108,7 +103,6 @@ const LoginScreen = ({ navigation }) => {
               style={{ marginTop: 10 }}
             />
 
-            {/* Botón de Salto Directo para el Simulador */}
             <MyButton
               title="SALTAR A HOME (OFFLINE)"
               type="outline"
