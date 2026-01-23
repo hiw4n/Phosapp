@@ -100,15 +100,14 @@ useFocusEffect(
   return (
     <View style={[SGS.containerCenter, { backgroundColor: '#121212' }]}>
       <FlatList
-        data={fotos} // Usamos 'fotos' (estado de la DB)
+        data={fotos} 
         keyExtractor={(item) => item.id.toString()}
-        numColumns={2} // Dos columnas
+        numColumns={2} 
         contentContainerStyle={styles.listContent}
         renderItem={renderItem}
         ListEmptyComponent={renderEmptyComponent}
       />
 
-      {/* Visor de foto a pantalla completa */}
       <Modal
         animationType="slide"
         transparent={false}

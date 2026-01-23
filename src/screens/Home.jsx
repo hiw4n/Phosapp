@@ -18,7 +18,7 @@ const HomeScreen = () => {
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusMessage, setStatusMessage] = useState('');
-  const navigation = useNavigation(); // Inicializa la navegación aquí
+  const navigation = useNavigation(); 
 
   const fetchRandomChallenge = async () => {
     setLoading(true);
